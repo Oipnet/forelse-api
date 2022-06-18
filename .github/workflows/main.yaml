@@ -1,0 +1,73 @@
+on: push
+name: Build Angular
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [ 8.1.x ]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: none
+          tools: composer:v2
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+        env:
+          update: true
+
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+#      - name: Copy file to ssh
+#        uses: easingthemes/ssh-deploy@main
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+#          ARGS: "-rltgoDzvO"
+#          SOURCE: "dist/forelse-blog"
+#          REMOTE_HOST: ${{ secrets.HOST }}
+#          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+#          TARGET: ${{ secrets.DEPLOY_PATH }}
+#
+#      - name: Initialize ssh connection
+#        id: ssh-forelse
+#        uses: invi5H/ssh-action@v1
+#        with:
+#          NAME: forelse
+#          SSH_HOST: ${{ secrets.HOST }}
+#          SSH_PORT: ${{ secrets.PORT }}
+#          SSH_USER: ${{ secrets.DEPLOY_USER }}
+#          SSH_KEY: ${{ secrets.SSH_KEY }}
+#
+#      - name: Initialize ssh connection root
+#        id: ssh-forelse-root
+#        uses: invi5H/ssh-action@v1
+#        with:
+#          NAME: forelse-root
+#          SSH_HOST: ${{ secrets.HOST }}
+#          SSH_PORT: ${{ secrets.PORT }}
+#          SSH_USER: 'root'
+#          SSH_KEY: ${{ secrets.SSH_ROOT_KEY }}
+#
+#      - name: Change owner
+#        run: ssh ${{ steps.ssh-forelse.outputs.SERVER }} chown -R portfolio:www-data ${{ secrets.DEPLOY_PATH }}
+#
+#      - name: Reload PM2
+#        run: ssh ${{ steps.ssh-forelse-root.outputs.SERVER }} pm2 reload forelse-blog -u www-data
+
+#      - name: Change owner
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.DEPLOY_USER }}
+#          key: ${{ secrets.SSH_KEY }}
+#          port: ${{ secrets.PORT }}
+#          script: "chown -R homepage:www-data ${{ secrets.DEPLOY_PATH }}"
+
