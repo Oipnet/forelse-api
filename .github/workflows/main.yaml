@@ -1,11 +1,11 @@
 on: push
-name: Build Angular
+name: Build API
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ 8.1.x ]
+        php-version: [ 8.1 ]
 
     steps:
       - uses: actions/checkout@v1
