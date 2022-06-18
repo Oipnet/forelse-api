@@ -26,15 +26,29 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-#      - name: Copy file to ssh
-#        uses: easingthemes/ssh-deploy@main
-#        env:
-#          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-#          ARGS: "-rltgoDzvO"
-#          SOURCE: "dist/forelse-blog"
-#          REMOTE_HOST: ${{ secrets.HOST }}
-#          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
-#          TARGET: ${{ secrets.DEPLOY_PATH }}
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Copy file to ssh
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+          TARGET: ${{ secrets.DEPLOY_PATH }}
 #
 #      - name: Initialize ssh connection
 #        id: ssh-forelse
