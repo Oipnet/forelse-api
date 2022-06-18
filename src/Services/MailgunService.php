@@ -19,10 +19,10 @@ class MailgunService implements SenderInterface
     public function send($from, $to, $subject, $message)
     {
         $email = (new Email())
-            ->from($from)
+            ->from('Arnaud POINTET <mailgun@mg.forelse.info>')
             ->to($to)
             ->subject($subject)
-            ->text($message);
+            ->text($from.'\n'.$message);
 
         $this->mailer->send($email);
     }
