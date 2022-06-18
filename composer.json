@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "name": "forelse-api",
+    "name": "forelse/forelse-api",
     "description": "Api pour le site forelse.info",
     "license": "proprietary",
     "minimum-stability": "stable",
