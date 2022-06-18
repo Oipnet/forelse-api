@@ -49,6 +49,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
           TARGET: ${{ secrets.DEPLOY_PATH }}
+          EXCLUDE: 'var/cache,.github/'
 #
 #      - name: Initialize ssh connection
 #        id: ssh-forelse
