@@ -51,15 +51,15 @@ jobs:
           TARGET: ${{ secrets.DEPLOY_PATH }}
           EXCLUDE: 'var/cache,.github/'
 #
-#      - name: Initialize ssh connection
-#        id: ssh-forelse
-#        uses: invi5H/ssh-action@v1
-#        with:
-#          NAME: forelse
-#          SSH_HOST: ${{ secrets.HOST }}
-#          SSH_PORT: ${{ secrets.PORT }}
-#          SSH_USER: ${{ secrets.DEPLOY_USER }}
-#          SSH_KEY: ${{ secrets.SSH_KEY }}
+      - name: Initialize ssh connection
+        id: ssh-forelse
+        uses: invi5H/ssh-action@v1
+        with:
+          NAME: forelse
+          SSH_HOST: ${{ secrets.HOST }}
+          SSH_PORT: ${{ secrets.PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
 #
 #      - name: Initialize ssh connection root
 #        id: ssh-forelse-root
@@ -70,9 +70,9 @@ jobs:
 #          SSH_PORT: ${{ secrets.PORT }}
 #          SSH_USER: 'root'
 #          SSH_KEY: ${{ secrets.SSH_ROOT_KEY }}
-#
-#      - name: Change owner
-#        run: ssh ${{ steps.ssh-forelse.outputs.SERVER }} chown -R portfolio:www-data ${{ secrets.DEPLOY_PATH }}
+
+      - name: Change owner
+        run: ssh ${{ steps.ssh-forelse.outputs.SERVER }} chown -R portfolio:www-data ${{ secrets.DEPLOY_PATH }}
 #
 #      - name: Reload PM2
 #        run: ssh ${{ steps.ssh-forelse-root.outputs.SERVER }} pm2 reload forelse-blog -u www-data
